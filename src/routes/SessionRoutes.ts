@@ -1,55 +1,72 @@
-import { Router } from 'express';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
 import { IReq, IRes } from './types/express/misc';
-import { ILoginRes, Iuser } from '@src/models/User';
-import { checkBanned, checkHash } from '@src/util/AccountUtils';
+import { ILoginForm, ISessionData } from '@src/models/User';
 
 import EnvVars from '@src/constants/EnvVars';
 import { MongoClient } from 'mongodb';
+import SystemResStatus from '@src/constants/SystemResStatus';
+import { checkBanned, compareHash } from '@src/util/SessionUtils';
 const mongoURI = EnvVars.DB.URI;
 const dbClient = new MongoClient(mongoURI);
 
-function postLogin(req: IReq<Iuser>, res: IRes) {
-    const userId = req.body.name;
+function postLogin(req: IReq<ILoginForm>, res: IRes) {
+    const userName = req.body.name;
     const userPassword = req.body.password;
-    dbClient.db('Main').collection('Accounts').findOne({ id: userId })
+
+    // check if req is a blank form
+    if (!userName || !userPassword) {
+        // console.log(2);
+        res.json(SystemResStatus.LOGIN.INPUT_BLANK);
+        return;
+    }
+    dbClient.db('Main').collection('Accounts').findOne({ name: userName })
         .then((data) => {
-            if (data) {
-                const banStatus = checkBanned(data)
+            if (data != undefined) {
+                const banStatus = checkBanned(data);
                 if (banStatus) {
+                    // console.log(1);
                     res.json(banStatus);
                     return;
                 }
-                if (data.passwordHash) {
-                    checkHash(userPassword ?? '', data.passwordHash)
+                if (data.passwordHash != undefined) {
+                    compareHash(userPassword ?? '', data.passwordHash)
                         .then(
-                            (res) => {
-                                if (res) {
-                                    const userSessionData: Iuser = {
-                                        id: data.id,
-                                        name: data.name,
+                            (r: any) => {
+                                if (r) {
+                                    const userSessionData: ISessionData = {
+                                        id: userName,
+                                        name: userName,
+                                        identity: data.identity,
                                     }
+                                    // console.log(3);
+                                    res.json(SystemResStatus.LOGIN.OK);
                                     req.session.user = userSessionData;
+                                    return;
+                                } else {
+                                    res.json(SystemResStatus.LOGIN.INPUT_INCORRECT);
+                                    return;
                                 }
                             },
                             (err: Error) => {
+                                // console.log(4);
                                 console.error(err);
+                                res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+                                return;
                             }
                         )
                 }
+            } else {
+                // console.log(5);
+                res.json(SystemResStatus.LOGIN.INPUT_INCORRECT);
+                return;
             }
-            res.json({
-                access: false,
-                status: 'LD-1',
-                reason: 'Your password is incorrect.'
-            } as ILoginRes)
         })
 }
 
 function getLogout(req: IReq, res: IRes) {
-    console.log(req.session);
-    if (req.session)
+    // console.log(req.session);
+    if (req.session.user != undefined)
         req.session.destroy((err) => {
             console.error(err);
         });

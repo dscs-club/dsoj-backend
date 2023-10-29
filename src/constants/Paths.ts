@@ -6,9 +6,12 @@
 export default {
   Base: '/api',
   Health: '/healthz',
-  Account: {
+  Session: {
     Login: '/session/login',
     Logout: '/session/logout',
     Status: '/session/status',
+  },
+  Account: {
+    Signup: '/account/signup'
   }
 } as const;

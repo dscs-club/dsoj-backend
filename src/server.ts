@@ -21,7 +21,7 @@ import { RouteError } from '@src/other/classes';
 
 import session from 'express-session';
 import mongoSession from 'connect-mongodb-session';
-import { Iuser } from './models/User';
+import { ISessionData, Iuser } from './models/User';
 
 // **** Variables **** //
 
@@ -71,7 +71,7 @@ app.use(session({
 
 declare module 'express-session' {
   interface SessionData {
-    user: Iuser
+    user: ISessionData
   }
 }
 
