@@ -32,4 +32,10 @@ export default {
     user: (process.env.DB_USER ?? ''),
     URI: getMongoURI((process.env.DB_USER ?? ''), (process.env.DB_PASSWD ?? ''), (process.env.DB_HOST ?? '')),
   },
+  judge0: {
+    host: (process.env.JUDGE0_HOST ?? ''),
+  },
+  judge: {
+    TasksPath: (process.env.PROBLEM_TASK_PATH ?? ''),
+  },
 } as const;

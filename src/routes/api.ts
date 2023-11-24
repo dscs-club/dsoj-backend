@@ -13,6 +13,8 @@ import AccountRoutes from './AccountRoutes'
 const apiRouter = Router(),
   validate = jetValidator();
 
+// **** Judge **** //
+apiRouter.post(Paths.Submit.Send, JudgeRoutes.postSend);
 
 // **** Health **** //
 apiRouter.get(Paths.Health, HealthRoutes.getHealth);

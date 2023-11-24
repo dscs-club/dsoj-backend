@@ -11,6 +11,9 @@ export default {
     Logout: '/session/logout',
     Status: '/session/status',
   },
+  Submit: {
+    Send: '/submit/send',
+  },
   Account: {
     Signup: '/account/signup'
   }
