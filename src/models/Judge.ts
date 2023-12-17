@@ -17,9 +17,9 @@ export class JudgeTask {
     public subTasks: JudgeTask[] = [];
     constructor(req: ISubmitRequest) {
         // get subtask data
-        fs.readdir(`${EnvVars.judge.TasksPath}/tasks/${req.problemId}/`, (err, ios) => {
-            if(err) throw err;
-            console.log(ios);
+        fs.readdir(`${EnvVars.judge.TasksPath}/tasks/${req.problemId}/`, (err, subtask_list) => {
+            if (err) throw err;
+            console.log(subtask_list);
         })
     }
 }
