@@ -24,10 +24,36 @@ const SystemResStatus: { [name: string]: { [name: string]: ISystemRes } } = {
         OK: {
             access: true,
             status: 'SA-1',
-            details: 'account created',            
-        }
-    }
-
+            details: 'account created',
+        },
+        NAME_TAKEN: {
+            access: false,
+            status: 'SD-1',
+            details: 'This name is already taken.',
+        },
+    },
+    SUMBIT: {
+        OK: {
+            access: true,
+            status: 'SA-1',
+            details: 'Your submission has been received.',
+        },
+        INPUT_INCORRECT: {
+            access: false,
+            status: 'SB-1',
+            details: 'Your name or password is incorrect.'
+        },
+        INPUT_BLANK: {
+            access: false,
+            status: 'SB-2',
+            details: 'Please input the full data.',
+        },
+        PROBLEM_NOT_FOUND: {
+            access: false,
+            status: 'SB-3',
+            details: 'Problem not found.',
+        },
+    },
 }
 
 export default SystemResStatus;
