@@ -39,7 +39,7 @@ function postSubmit(req: IReq<ISubmitRequest>, res: IRes) {
 }
 
 function getSubmissionList(req: IReq, res: IRes) {
-    mongo.db('Judge').collection('Submissions').find({}).toArray()
+    mongo.db('Judge').collection('Submissions').find({}, { projection: { code: 0, _id: 0  } }).toArray()
         .then((data) => {
             return res.json(data);
         })
