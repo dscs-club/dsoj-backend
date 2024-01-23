@@ -9,32 +9,50 @@ import EnvVars from '@src/constants/EnvVars';
 import { MongoClient } from 'mongodb';
 
 const mongoURI = EnvVars.DB.URI;
-const dbClient = new MongoClient(mongoURI);
+const mongo = new MongoClient(mongoURI);
 
-function postSignup(req: IReq<ISignupForm>, res: IRes) {
+// TODO: add admin verification
+// TODO: check email repeatability
+async function postSignup(req: IReq<ISignupForm>, res: IRes) {
     const userData = req.body;
     const userName = userData.name;
     const userEmail = userData.email;
     const userPassword = userData.password;
+    let ifContinue = true;
     if (!userData || !userName || !userEmail || !userPassword) {
         res.json(SystemResStatus.NORMAL.INPUT_BLANK);
+        ifContinue = false;
         return;
     }
-    const userId = genUniqueId(dbClient.db('Main').collection('user'));
-    genHash(userPassword ?? '')
-        .then((userPasswordHash: any) => {
-            const user: Iuser = {
-                id: userId,
-                name: userName,
-                passwordHash: userPasswordHash ?? '',
-                email: userEmail,
-                identity: IdentityCode.CommunityUser,
-                banned: false,
+    await mongo.db('Main').collection('Accounts').findOne({ name: userName })
+        .then((data) => {
+            if (data != undefined) {
+                res.json(SystemResStatus.SIGNUP.NAME_TAKEN);
+                ifContinue = false;
+                return;
             }
-            dbClient.db('Main').collection('Accounts').insertOne(user)
-                .catch(err => console.error(err))
-            res.json(SystemResStatus.SIGNUP.OK);
         })
+    if (!ifContinue) return;
+    // TODO: userId should be a constant
+    genUniqueId(mongo.db('Main').collection('user'))
+        .then(
+            (userId) => {
+                genHash(userPassword ?? '')
+                    .then((userPasswordHash: any) => {
+                        const user: Iuser = {
+                            id: userId as string,
+                            name: userName,
+                            passwordHash: userPasswordHash ?? '',
+                            email: userEmail,
+                            identity: IdentityCode.CommunityUser,
+                            banned: false,
+                        }
+                        mongo.db('Main').collection('Accounts').insertOne(user)
+                            .catch(err => console.error(err))
+                        res.json(SystemResStatus.SIGNUP.OK);
+                    })
+            }
+        )
 }
 
 export default {

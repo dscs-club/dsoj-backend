@@ -3,7 +3,7 @@ import jetValidator from 'jet-validator';
 
 import Paths from '../constants/Paths';
 import HealthRoutes from './HealthRoutes';
-import JudgeRoutes from './JudgeRoutes';
+import JudgeRoutes from './SubmissionsRoute';
 import SessionRoutes from './SessionRoutes';
 import AccountRoutes from './AccountRoutes'
 
@@ -13,8 +13,9 @@ import AccountRoutes from './AccountRoutes'
 const apiRouter = Router(),
   validate = jetValidator();
 
-// **** Judge **** //
-apiRouter.post(Paths.Submit.Send, JudgeRoutes.postSend);
+// **** Judge **** // TODO
+apiRouter.post(Paths.Submit.Send, JudgeRoutes.postSubmit);
+apiRouter.get(Paths.Submit.List, JudgeRoutes.getSubmissionList);
 
 // **** Health **** //
 apiRouter.get(Paths.Health, HealthRoutes.getHealth);
