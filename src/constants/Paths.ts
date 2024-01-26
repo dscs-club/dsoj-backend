@@ -15,6 +15,10 @@ export default {
     Send: '/submission/submit',
     List: '/submission/list',
   },
+  Problem: {
+    List: '/problem/list',
+    Get: '/problem/get',
+  },
   Account: {
     Signup: '/account/signup'
   }
