@@ -20,7 +20,7 @@ apiRouter.get(Paths.Submit.List, JudgeRoutes.getSubmissionList);
 
 
 // **** Problems **** //
-apiRouter.post(Paths.Problem.Send, ProblemRoutes.postProblem);
+apiRouter.get(Paths.Problem.Details, ProblemRoutes.getProblemDetails);
 apiRouter.get(Paths.Problem.List, ProblemRoutes.getProblemList);
 
 

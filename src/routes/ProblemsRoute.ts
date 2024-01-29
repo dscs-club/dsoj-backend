@@ -23,6 +23,7 @@ function getProblemDetails(req: IReq, res: IRes) {
 }
 
 export default {
-    getProblemList
+    getProblemList,
+    getProblemDetails,
 } as const;
 
