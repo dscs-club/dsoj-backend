@@ -32,6 +32,16 @@ console.log('NODE_ENV: ' + EnvVars.NodeEnv);
 
 // **** Setup **** //
 
+// cors middleware
+import cors from 'cors';
+app.use(cors({
+  origin: "http://localhost:3001", 
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Access-Control-Allow-Origin'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+}));
+
 // Basic middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -1,6 +1,6 @@
 import EnvVars from '@src/constants/EnvVars';
 import fs from 'fs';
-import { ISubmitRequest, ISumbitionResult } from '@src/models/Submission';
+import { ISubmitRequest } from '@src/models/Submission';
 
 export interface JudgeResult {
     executionTime: number;

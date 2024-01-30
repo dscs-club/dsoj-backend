@@ -1,4 +1,4 @@
 import {Iuser} from '@src/models/User' 
-interface SessionData {
+export interface SessionData {
   user: Iuser;
 }
