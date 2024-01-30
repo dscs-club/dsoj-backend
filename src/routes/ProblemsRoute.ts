@@ -8,7 +8,7 @@ const mongoURI = EnvVars.DB.URI;
 const mongo = new MongoClient(mongoURI);
 
 function getProblemList(req: IReq, res: IRes) {
-    mongo.db('Judge').collection('Problems').find({}, { projection: { _id: 0 } }).toArray()
+    mongo.db('Judge').collection('Problems').find({}, { projection: { _id: 0, details: 0 } }).toArray()
         .then((data) => {
             return res.json(data);
         })
