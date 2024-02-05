@@ -15,7 +15,7 @@ function getProblemList(req: IReq, res: IRes) {
 }
 
 function getProblemDetails(req: IReq, res: IRes) {
-    const problemId = req.params.problemId;
+    const problemId = req.params.id;
     mongo.db('Judge').collection('Problems').findOne({ id: problemId }, { projection: { _id: 0 } })
         .then((data) => {
             return res.json(data);

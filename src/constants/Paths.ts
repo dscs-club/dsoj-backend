@@ -17,7 +17,7 @@ export default {
   },
   Problem: {
     List: '/problem/list',
-    Details: '/problem/details',
+    Details: '/problem/details/:id',
   },
   Account: {
     Signup: '/account/signup'

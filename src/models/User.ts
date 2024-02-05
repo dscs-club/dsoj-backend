@@ -4,7 +4,6 @@ export interface Iuser {
     passwordHash: string;
     email?: string;
     identity: number;
-    school?: string;
     banned: boolean;
 }
 

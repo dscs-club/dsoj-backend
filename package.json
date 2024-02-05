@@ -48,6 +48,7 @@
     "mongodb": "^6.2.0",
     "morgan": "^1.10.0",
     "punycode": "^2.3.1",
+    "react-bootstrap-icons": "^1.10.3",
     "ts-command-line-args": "^2.5.1"
   },
   "devDependencies": {
